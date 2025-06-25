@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Peludos - Agenda Veterinaria Digital</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="logo">
+                <i class="fas fa-paw"></i>
+                <h1>Peludos</h1>
+                <span>Agenda Veterinaria Digital</span>
+            </div>
+            <div class="header-actions">
+                <button class="btn btn-primary" onclick="openModal('appointmentModal')">
+                    <i class="fas fa-plus"></i> Nueva Cita
+                </button>
+                <button class="btn btn-secondary" onclick="openModal('patientModal')">
+                    <i class="fas fa-user-plus"></i> Nuevo Paciente
+                </button>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Dashboard Stats -->
+            <div class="stats-container">
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-calendar-check"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3 id="todayAppointments">0</h3>
+                        <p>Citas Hoy</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3 id="totalPatients">0</h3>
+                        <p>Pacientes</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3 id="pendingAppointments">0</h3>
+                        <p>Pendientes</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-bell"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3 id="reminders">0</h3>
+                        <p>Recordatorios</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tabs -->
+            <div class="tabs">
+                <button class="tab-btn active" onclick="showTab('appointments')">
+                    <i class="fas fa-calendar"></i> Citas
+                </button>
+                <button class="tab-btn" onclick="showTab('patients')">
+                    <i class="fas fa-users"></i> Pacientes
+                </button>
+                <button class="tab-btn" onclick="showTab('history')">
+                    <i class="fas fa-history"></i> Historial
+                </button>
+            </div>
+
+            <!-- Search Bar -->
+            <div class="search-container">
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="searchInput" placeholder="Buscar citas, pacientes...">
+                </div>
+                <div class="filter-options">
+                    <select id="filterStatus">
+                        <option value="">Todos los estados</option>
+                        <option value="pending">Pendiente</option>
+                        <option value="confirmed">Confirmada</option>
+                        <option value="completed">Completada</option>
+                        <option value="cancelled">Cancelada</option>
+                    </select>
+                    <select id="filterDate">
+                        <option value="">Todas las fechas</option>
+                        <option value="today">Hoy</option>
+                        <option value="week">Esta semana</option>
+                        <option value="month">Este mes</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Content Areas -->
+            <div id="appointmentsTab" class="tab-content active">
+                <div class="content-header">
+                    <h2>Citas Programadas</h2>
+                    <div class="view-options">
+                        <button class="view-btn active" onclick="setView('list')">
+                            <i class="fas fa-list"></i>
+                        </button>
+                        <button class="view-btn" onclick="setView('calendar')">
+                            <i class="fas fa-calendar-alt"></i>
+                        </button>
+                    </div>
+                </div>
+                <div id="appointmentsList" class="appointments-list">
+                    <!-- Appointments will be loaded here -->
+                </div>
+            </div>
+
+            <div id="patientsTab" class="tab-content">
+                <div class="content-header">
+                    <h2>Pacientes Registrados</h2>
+                </div>
+                <div id="patientsList" class="patients-list">
+                    <!-- Patients will be loaded here -->
+                </div>
+            </div>
+
+            <div id="historyTab" class="tab-content">
+                <div class="content-header">
+                    <h2>Historial Médico</h2>
+                </div>
+                <div id="historyList" class="history-list">
+                    <!-- Medical history will be loaded here -->
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modals -->
+    <!-- Appointment Modal -->
+    <div id="appointmentModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Nueva Cita</h2>
+                <button class="close-btn" onclick="closeModal('appointmentModal')">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <form id="appointmentForm" class="modal-form">
+                <div class="form-group">
+                    <label for="patientSelect">Paciente</label>
+                    <select id="patientSelect" required>
+                        <option value="">Seleccionar paciente</option>
+                    </select>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="appointmentDate">Fecha</label>
+                        <input type="date" id="appointmentDate" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="appointmentTime">Hora</label>
+                        <input type="time" id="appointmentTime" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="appointmentType">Tipo de Consulta</label>
+                    <select id="appointmentType" required>
+                        <option value="">Seleccionar tipo</option>
+                        <option value="checkup">Revisión General</option>
+                        <option value="vaccination">Vacunación</option>
+                        <option value="emergency">Emergencia</option>
+                        <option value="surgery">Cirugía</option>
+                        <option value="followup">Seguimiento</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="appointmentNotes">Notas</label>
+                    <textarea id="appointmentNotes" rows="3" placeholder="Observaciones adicionales..."></textarea>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('appointmentModal')">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Guardar Cita</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Patient Modal -->
+    <div id="patientModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Nuevo Paciente</h2>
+                <button class="close-btn" onclick="closeModal('patientModal')">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <form id="patientForm" class="modal-form">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="petName">Nombre de la Mascota</label>
+                        <input type="text" id="petName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="petSpecies">Especie</label>
+                        <select id="petSpecies" required>
+                            <option value="">Seleccionar</option>
+                            <option value="dog">Perro</option>
+                            <option value="cat">Gato</option>
+                            <option value="bird">Ave</option>
+                            <option value="other">Otro</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="petBreed">Raza</label>
+                        <input type="text" id="petBreed">
+                    </div>
+                    <div class="form-group">
+                        <label for="petAge">Edad (años)</label>
+                        <input type="number" id="petAge" min="0" step="0.1">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="petColor">Color</label>
+                    <input type="text" id="petColor">
+                </div>
+                <div class="form-group">
+                    <label for="ownerName">Nombre del Propietario</label>
+                    <input type="text" id="ownerName" required>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="ownerPhone">Teléfono</label>
+                        <input type="tel" id="ownerPhone" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="ownerEmail">Email</label>
+                        <input type="email" id="ownerEmail">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="ownerAddress">Dirección</label>
+                    <textarea id="ownerAddress" rows="2"></textarea>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('patientModal')">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Guardar Paciente</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Medical History Modal -->
+    <div id="historyModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Historial Médico</h2>
+                <button class="close-btn" onclick="closeModal('historyModal')">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="historyContent">
+                    <!-- Medical history content will be loaded here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification Toast -->
+    <div id="toast" class="toast"></div>
+
+    <script src="script.js"></script>
+</body>
+</html> 

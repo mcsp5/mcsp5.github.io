@@ -1,0 +1,36 @@
+{
+  "name": "peludos-agenda-veterinaria",
+  "version": "1.0.0",
+  "description": "Agenda digital especializada para clínicas veterinarias",
+  "main": "index.html",
+  "scripts": {
+    "start": "python -m http.server 8000",
+    "dev": "python -m http.server 8000",
+    "serve": "python -m http.server 8000"
+  },
+  "keywords": [
+    "veterinaria",
+    "agenda",
+    "citas",
+    "pacientes",
+    "historial-medico",
+    "javascript",
+    "html",
+    "css"
+  ],
+  "author": "Equipo ADSO SENA",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/equipo-adso/peludos-agenda-veterinaria.git"
+  },
+  "bugs": {
+    "url": "https://github.com/equipo-adso/peludos-agenda-veterinaria/issues"
+  },
+  "homepage": "https://github.com/equipo-adso/peludos-agenda-veterinaria#readme",
+  "devDependencies": {},
+  "dependencies": {},
+  "engines": {
+    "node": ">=14.0.0"
+  }
+} 
